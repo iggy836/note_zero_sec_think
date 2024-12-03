@@ -1,0 +1,76 @@
+アプリ名: One Minute Memo
+概要: 1分間のタイマーで質問に向き合うシンプルなアプリケーション
+
+主要機能:
+  - ランダム質問表示
+  - タイマー機能（60秒）
+  - アナログ＆デジタル表示のタイマーUI
+  - タイマー終了時の通知音
+
+コンポーネント設計:
+  OneMinuteMemoScreen:
+    type: StatefulWidget
+    state:
+      - currentQuestion: 現在の質問
+      - timeLeft: 残り時間（秒）
+      - isRunning: タイマー実行状態
+      - progress: 進捗状況（1.0-0.0）
+    メソッド:
+      - startTimer: タイマー開始
+      - nextQuestion: 次の質問への遷移
+      - formatTime: 時間のフォーマット処理
+      - _getRandomQuestion: ランダムな質問の取得
+
+データ管理:
+  初期質問データ:
+    保存場所: lib/data/initial_questions.dart
+    形式: List<Map<String, dynamic>>
+    内容:
+      - content: 質問文
+      - sub_content: 補足説明（オプション）
+
+UI設計:
+  メイン画面:
+    コンポーネント:
+      - AppBar: "One Minute Memo"
+      - 質問表示エリア: QuestionDisplay
+      - タイマー表示:
+          - CustomPaint円形プログレスインジケーター
+          - デジタルタイマー表示
+      - 操作ボタン:
+          - Start: タイマー開始
+          - Stop: タイマー停止
+          - Next: 次の質問
+
+タイマー仕様:
+  制限時間: 60秒
+  表示形式:
+    アナログ: CustomPaintによる円形プログレスバー
+    デジタル: MM:SS形式
+  終了時動作:
+    - 通知音再生:
+        タイミング: 残り2秒時
+        管理: NotificationService
+
+フォルダ構造:
+  lib/:
+    - main.dart                    # アプリケーションのエントリーポイント
+    screens/:
+      - one_minute_memo_screen.dart # メイン画面の実装
+    widgets/:
+      - timer_painter.dart         # タイマーの円形表示
+      - question_display.dart      # 質問表示
+    services/:
+      - notification_service.dart   # 通知音の管理
+    data/:
+      - initial_questions.dart     # 質問データ
+
+使用パッケージ:
+  - flutter: sdk
+  - audioplayers: ^5.2.1          # 通知音用
+  - flutter_lints: ^4.0.0         # 開発用
+
+非機能要件:
+  - シンプルで直感的なUI
+  - 最小限の依存関係
+  - メンテナンス性の重視
